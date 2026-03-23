@@ -2,6 +2,7 @@
 using JobTracker.API.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
 
 namespace JobTracker.API.Controllers
 {
@@ -16,7 +17,7 @@ namespace JobTracker.API.Controllers
             _userManager = userManager;
         }
 
-
+        //Chiamata per registrazione utenti
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterRequestDto registerDto)
         {
@@ -27,7 +28,7 @@ namespace JobTracker.API.Controllers
             }
             //controllo se la mail con cui ci si registra esiste gia
             var existingUser = await _userManager.FindByEmailAsync(registerDto.Email);
-            if(existingUser != null)
+            if (existingUser != null)
             {
                 return BadRequest("Email already exists!");
             }
@@ -49,5 +50,37 @@ namespace JobTracker.API.Controllers
             return StatusCode(201, "User registered successfully!");
 
         }
+
+        //Chiamata per login utenti
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginRequestDto loginDto)
+        {
+            //controllo se il dto ricevuto rispetta le regole di validazione               
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            //controllo se la mail esiste nel database
+            var user = await _userManager.FindByEmailAsync(loginDto.Email);
+            if (user == null)
+            {
+                return Unauthorized("Invalid credentials");
+            }
+
+            //controllo se la password è corretta con metodo di identity
+            var isPasswordValid = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+            if (!isPasswordValid)
+            {
+                return Unauthorized("Invalid credentials");
+            }
+
+            return Ok();
+        }
+
+      
+    
+
+
     }
 }

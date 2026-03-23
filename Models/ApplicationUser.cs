@@ -10,3 +10,4 @@ namespace JobTracker.API.Models
         public ICollection<JobApplication> JobApplications { get; set; }= new List<JobApplication>();
     }
 }
+

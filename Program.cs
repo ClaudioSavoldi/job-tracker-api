@@ -1,5 +1,6 @@
 using JobTracker.API.Data;
 using JobTracker.API.Models;
+using JobTracker.API.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,7 +22,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
-
+//uso service per il jwt
+builder.Services.AddScoped<IJwtService, IJwtService>();
 
 var app = builder.Build();
 

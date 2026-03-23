@@ -1,9 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>7590b644-1aed-42ff-9ad5-92c2018a9a18</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,7 +23,6 @@
 
   <ItemGroup>
     <Folder Include="Dtos\Responses\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>
