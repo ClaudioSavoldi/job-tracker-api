@@ -1,5 +1,6 @@
 ﻿using JobTracker.API.Dtos.Requests;
 using JobTracker.API.Models;
+using JobTracker.API.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
@@ -11,10 +12,11 @@ namespace JobTracker.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
-
-        public AuthController(UserManager<ApplicationUser> userManager)
+        private readonly IJwtService _jwtService;
+        public AuthController(UserManager<ApplicationUser> userManager, IJwtService jwtService)
         {
             _userManager = userManager;
+            _jwtService = jwtService;
         }
 
         //Chiamata per registrazione utenti
@@ -75,7 +77,10 @@ namespace JobTracker.API.Controllers
                 return Unauthorized("Invalid credentials");
             }
 
-            return Ok();
+            var token = await _jwtService.GenerateTokenAsync(user);
+
+            return Ok(new {token});
+
         }
 
       
